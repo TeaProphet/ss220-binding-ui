@@ -87,6 +87,53 @@ test('global bindings persist and are inherited by a character',async({page})=>{
  await expect(page.getByText(`say ${phrase}`).first()).toBeVisible();
 });
 
+test('applying from global view excludes the previously selected character',async({page})=>{
+ const stamp=Date.now(),name=`Глобальный тест ${stamp}`,personal=`Личное ${stamp}`,shared=`Общее ${stamp}`;
+ await page.goto('/');
+ await page.getByRole('button',{name:'Добавить персонажа'}).click();
+ await page.getByLabel('Имя персонажа').fill(name);
+ await page.getByRole('button',{name:'Создать персонажа'}).click();
+ await page.getByRole('button',{name:/Добавить (первый )?бинд/}).first().click();
+ await page.getByLabel('Что сделать').selectOption('say');
+ await page.getByLabel('Текст').fill(personal);
+ await page.getByRole('button',{name:'Записать сочетание'}).click();
+ await page.keyboard.press('KeyJ');
+ await page.getByRole('button',{name:'Сохранить бинд'}).click();
+ await page.getByRole('button',{name:'Сохранить профиль'}).click();
+ await page.locator('.global-nav').click();
+ await page.getByRole('button',{name:/Добавить (первый )?бинд/}).first().click();
+ await page.getByLabel('Что сделать').selectOption('say');
+ await page.getByLabel('Текст').fill(shared);
+ await page.getByRole('button',{name:'Записать сочетание'}).click();
+ await page.keyboard.press('KeyK');
+ await page.getByRole('button',{name:'Сохранить бинд'}).click();
+ let applied;
+ await page.route('**/api/bindings',async route=>{
+  if(route.request().method()!=='POST')return route.continue();
+  applied=route.request().postDataJSON().config;
+  await route.fulfill({status:200,contentType:'application/json',body:'{"revision":"test","exists":true}'});
+ });
+ await page.getByRole('button',{name:'Применить в игре'}).click();
+ await expect(page.getByRole('status')).toContainText('В игру записаны общие бинды для всех персонажей.');
+ expect(applied.binds.some(bind=>bind.function===`say ${shared}`)).toBe(true);
+ expect(applied.binds.some(bind=>bind.function===`say ${personal}`)).toBe(false);
+});
+
+test('new Walk remap does not copy the default Shift binding',async({page})=>{
+ await page.goto('/');
+ await page.getByRole('button',{name:/Для всех/}).click();
+ await page.getByRole('button',{name:/Добавить (первый )?бинд/}).first().click();
+ await page.getByText('Переназначить системный бинд',{exact:true}).click();
+ await page.getByLabel('Действие').fill('Walk');
+ await page.getByRole('button',{name:'Записать сочетание'}).click();
+ await page.keyboard.press('CapsLock');
+ await page.getByRole('button',{name:'Сохранить бинд'}).click();
+ const walkRows=page.locator('.binding-row').filter({hasText:'Walk'});
+ await expect(walkRows).toHaveCount(1);
+ await expect(walkRows).toContainText('CapsLock');
+ await expect(walkRows).not.toContainText('Shift');
+});
+
 test('system bindings stay in a separate read-only menu',async({page})=>{
  await page.goto('/');
  await page.getByRole('button',{name:/Системные бинды/}).click();

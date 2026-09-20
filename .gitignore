@@ -5,3 +5,5 @@ playwright-report/
 .idea/
 *.log
 .binding-deck.pid
+installer/.stage/
+release/

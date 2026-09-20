@@ -41,7 +41,6 @@ export function changeBinding(defaults, config, original, replacement) {
     if(!next.binds.some(b=>b.function===original.function) && (original.type!=='Command' || defaults.binds.some(b=>b.function===original.function))) next.leaveEmpty=[...new Set([...(next.leaveEmpty||[]),original.function])];
   }
   if(replacement) {
-    if(!original || original.function!==replacement.function) materialize(replacement.function);
     next.binds.push(replacement);
     next.leaveEmpty=(next.leaveEmpty||[]).filter(f=>f!==replacement.function);
   }

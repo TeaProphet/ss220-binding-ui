@@ -14,6 +14,12 @@ test('editing a default preserves alternate binding and metadata',()=>{
  assert.equal(changed.binds.at(-1).priority,3);
  assert.equal(effective(defaults,resetFunction(changed,'Use')).length,3);
 });
+test('new system remap replaces defaults instead of copying them',()=>{
+ const walkDefaults={version:1,binds:[{function:'Walk',key:'Shift',type:'State'}]};
+ const changed=changeBinding(walkDefaults,emptyConfig(),null,{function:'Walk',key:'CapsLock',type:'State'});
+ assert.deepEqual(changed.binds,[{function:'Walk',key:'CapsLock',type:'State'}]);
+ assert.deepEqual(effective(walkDefaults,changed).map(bind=>bind.key),['CapsLock']);
+});
 test('deleting last assignment suppresses defaults and can be restored',()=>{
  let c=emptyConfig();c=changeBinding(defaults,c,effective(defaults,c).find(b=>b.function==='MoveUp'),null);
  assert.deepEqual(c.leaveEmpty,['MoveUp']);assert.equal(effective(defaults,c).length,2);
