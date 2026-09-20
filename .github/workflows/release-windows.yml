@@ -11,6 +11,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: windows-installer-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   installer:
     runs-on: windows-latest
@@ -62,16 +66,33 @@ jobs:
           if-no-files-found: error
 
       - name: Publish to GitHub Release
-        if: github.ref_type == 'tag'
+        if: github.ref_type == 'tag' || github.ref == 'refs/heads/master'
         shell: pwsh
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = '${{ github.ref_name }}'
           $installer = 'release/SS220-Binding-Setup-${{ steps.version.outputs.value }}.exe'
-          gh release view $tag 2>$null
-          if ($LASTEXITCODE -ne 0) {
-            gh release create $tag $installer --title "SS220 Binding $tag" --generate-notes
+          if ('${{ github.ref_type }}' -eq 'tag') {
+            $tag = '${{ github.ref_name }}'
+            gh release view $tag 2>$null
+            if ($LASTEXITCODE -ne 0) {
+              gh release create $tag $installer --title "SS220 Binding $tag" --generate-notes
+            } else {
+              gh release upload $tag $installer --clobber
+            }
           } else {
-            gh release upload $tag $installer --clobber
+            $tag = 'latest'
+            $title = 'SS220 Binding — актуальная сборка'
+            $notes = "Автоматическая сборка ветки master. Коммит: $env:GITHUB_SHA"
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git tag --force $tag $env:GITHUB_SHA
+            git push origin "refs/tags/$tag" --force
+            gh release view $tag 2>$null
+            if ($LASTEXITCODE -ne 0) {
+              gh release create $tag $installer --title $title --notes $notes --latest
+            } else {
+              gh release upload $tag $installer --clobber
+              gh release edit $tag --title $title --notes $notes --latest
+            }
           }
