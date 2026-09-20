@@ -1,0 +1,7 @@
+.skip-link{position:fixed;z-index:200;left:12px;top:8px;padding:9px 12px;color:#fff;background:#315573;border:1px solid #94c7f2;border-radius:4px;transform:translateY(-160%)}
+.skip-link:focus{transform:none}
+button,a,label{touch-action:manipulation}
+.modal,.sidebar,.binding-list{overscroll-behavior:contain}
+.binding-row{content-visibility:auto;contain-intrinsic-size:auto 52px}
+.mobile-menu{display:none}
+@media(max-width:850px){.mobile-menu{display:grid}.workspace{overflow-x:hidden}}

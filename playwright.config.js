@@ -1,0 +1,2 @@
+import {defineConfig} from '@playwright/test';
+export default defineConfig({testDir:'./tests/browser',workers:1,use:{baseURL:'http://127.0.0.1:3142',channel:'msedge',headless:true},webServer:{command:'node server/index.js --production',url:'http://127.0.0.1:3142',reuseExistingServer:false,env:{PORT:'3142',SS14_KEYBINDS_PATH:process.cwd()+'/test-results/game/keybinds.yml',SS14_GLOBAL_PATH:process.cwd()+'/test-results/game/binding-deck-global.json'}}});

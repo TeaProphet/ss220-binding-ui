@@ -1,0 +1,117 @@
+profile:
+  preferenceUnavailable: SpawnAsOverflow
+  signatureData: null
+  teleportAfkToCryoStorage: True
+  spawnPriority: None
+  appearance:
+    markings:
+      Eyes: {}
+      Head: {}
+      Torso:
+        Overlay:
+        - markingColor:
+          - '#A92504FF'
+          markingId: DionaVineOverlay
+      ArmLeft: {}
+      LegLeft: {}
+      ArmRight: {}
+      FootLeft: {}
+      HandLeft: {}
+      LegRight: {}
+      FootRight: {}
+      HandRight: {}
+    skinColor: '#91782BFF'
+    eyeColor: '#00FF1EFF'
+  gender: Epicene
+  sex: Unsexed
+  age: 58
+  species: Diona
+  voice: mitadream
+  flavorText: ""
+  name: Туманная Осень
+  _loadouts:
+    JobBotanist:
+      entityName: null
+      selectedLoadouts:
+        WorkerCash:
+        - prototype: WorkerCash
+        BotanistShoes:
+        - prototype: BotanistShoesBrown
+        BotanistNeck: []
+        BotanistBelt:
+        - prototype: BotanistBeltDefoult
+        GroupSpeciesBreathTool: []
+        ServiceInnerEncryptionKeys: []
+        Trinkets:
+        - prototype: FlowerWreath
+        - prototype: HandheldStationMap
+        SurvivalVox: []
+        Survival:
+        - prototype: EmergencyOxygen
+        Glasses: []
+        BotanistOuterClothing:
+        - prototype: BotanistApronBrown
+        BotanistBackpack:
+        - prototype: BotanistDuffel
+        BotanistJumpsuit:
+        - prototype: BotanistOverallsWhite
+        BotanistHead: []
+        GroupTankHarness: []
+      role: JobBotanist
+    JobZookeeper:
+      entityName: null
+      selectedLoadouts:
+        WorkerCash:
+        - prototype: WorkerCash
+        ServiceInnerEncryptionKeys: []
+        Trinkets:
+        - prototype: BoxFolderBaseThreePapers
+        - prototype: FlowerWreath
+        - prototype: HandheldStationMap
+        GroupSpeciesBreathTool: []
+        SurvivalVox: []
+        Survival:
+        - prototype: EmergencyOxygen
+        CommonBackpack:
+        - prototype: CommonDuffel
+        Glasses: []
+        GroupTankHarness: []
+      role: JobZookeeper
+    JobChaplain:
+      entityName: null
+      selectedLoadouts:
+        WorkerCash:
+        - prototype: WorkerCash
+        GroupSpeciesBreathTool: []
+        ServiceInnerEncryptionKeys: []
+        Trinkets:
+        - prototype: FlowerWreath
+        - prototype: ClothingNeckGrapePin
+        - prototype: BoxFolderBaseThreePapers
+        SurvivalVox: []
+        Survival:
+        - prototype: EmergencyOxygen
+        Glasses: []
+        ChaplainBible:
+        - prototype: BibleDruid
+        ChaplainOuterClothing:
+        - prototype: HoodieChaplainWhite
+        CommonBackpack:
+        - prototype: CommonDuffel
+        ChaplainJumpsuit:
+        - prototype: ChaplainRobesLight
+        ChaplainNeck: []
+        ChaplainMask: []
+        ChaplainHead: []
+        GroupTankHarness: []
+      role: JobChaplain
+  _traitPreferences:
+  - Pacifist
+  - TradebandLanguage
+  _antagPreferences: []
+  _jobPriorities:
+    Zookeeper: High
+    Chaplain: Medium
+version: 2
+forkId: SS220ReleaseStation
+...

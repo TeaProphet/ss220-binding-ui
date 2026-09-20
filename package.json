@@ -1,0 +1,6 @@
+{
+  "name": "ss14-binding", "version": "1.0.0", "private": true, "type": "module",
+  "scripts": {"dev": "node server/index.js", "start": "node server/index.js --production", "build": "vite build", "test": "node --test tests/*.test.js", "test:e2e": "playwright test"},
+  "dependencies": {"express": "^5.1.0", "react": "^19.1.0", "react-dom": "^19.1.0", "yaml": "^2.8.0", "lucide-react": "^0.468.0"},
+  "devDependencies": {"vite": "^7.1.0", "@playwright/test": "^1.55.0"}
+}
