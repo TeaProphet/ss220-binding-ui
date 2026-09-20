@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
+import React, {useEffect, useLayoutEffect, useMemo, useRef, useState} from 'react';
 import {createRoot} from 'react-dom/client';
 import {AlertTriangle, BookOpen, Check, ChevronRight, CircleUserRound, FileUp, Gamepad2, Keyboard, Menu, Plus, Power, Save, Search, Settings2, Trash2, Undo2, Upload, Users, X} from 'lucide-react';
 import {changeBinding, combination, emptyConfig, eventCombo, keys, signature} from '../shared/bindings.js';
@@ -17,7 +17,7 @@ const stripMeta=bind=>Object.fromEntries(Object.entries(bind).filter(([key])=>!k
 function mergeConfigs(common,role){if(!role)return structuredClone(common);const replaced=new Set([...(role.binds||[]).map(bind=>bind.function),...(role.leaveEmpty||[])]);return {version:1,binds:[...(common.binds||[]).filter(bind=>!replaced.has(bind.function)),...(role.binds||[])].map(stripMeta),leaveEmpty:[...new Set([...(common.leaveEmpty||[]).filter(fn=>!replaced.has(fn)),...(role.leaveEmpty||[])])]}}
 function Keycaps({bind}){return <span className="keycaps">{combination(bind).map((key,index)=><React.Fragment key={`${key}-${index}`}>{index>0&&<span className="key-plus">+</span>}<kbd>{pretty(key)}</kbd></React.Fragment>)}</span>}
 
-function useButtonTitles(){useEffect(()=>{const sync=()=>document.querySelectorAll('button').forEach(button=>{if(button.hasAttribute('title')&&!button.dataset.autoTitle)return;const title=(button.getAttribute('aria-label')||button.innerText||'').replace(/\s+/g,' ').trim();if(title){button.title=title;button.dataset.autoTitle='true'}});sync();const observer=new MutationObserver(sync);observer.observe(document.body,{subtree:true,childList:true,characterData:true});return()=>observer.disconnect()},[])}
+function useButtonTitles(){useLayoutEffect(()=>{const sync=()=>document.querySelectorAll('button').forEach(button=>{if(button.hasAttribute('title')&&!button.dataset.autoTitle)return;const title=(button.getAttribute('aria-label')||button.innerText||'').replace(/\s+/g,' ').trim();if(title){button.title=title;button.dataset.autoTitle='true'}});sync();const observer=new MutationObserver(sync);observer.observe(document.body,{subtree:true,childList:true,characterData:true});return()=>observer.disconnect()},[])}
 
 function App(){
  const [session,setSession]=useState(null),[presets,setPresets]=useState({}),[globalSaved,setGlobalSaved]=useState(emptyConfig()),[activeName,setActiveName]=useState(''),[scope,setScope]=useState('common');

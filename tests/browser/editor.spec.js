@@ -144,7 +144,7 @@ test('system bindings stay in a separate read-only menu',async({page})=>{
 });
 
 test('every button exposes a native title',async({page})=>{
- const expectTitles=async()=>expect(await page.locator('button').evaluateAll(buttons=>buttons.every(button=>Boolean(button.title.trim())))).toBe(true);
+ const expectTitles=async()=>expect.poll(()=>page.locator('button').evaluateAll(buttons=>buttons.every(button=>Boolean(button.title.trim())))).toBe(true);
  await page.goto('/');
  await expectTitles();
  await expect(page.getByRole('button',{name:/Системные бинды/})).toHaveAttribute('title','Системные бинды справочник игры');
